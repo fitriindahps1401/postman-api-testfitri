@@ -1,0 +1,65 @@
+$kind: http-request
+name: Delete a Post
+url: https://jsonplaceholder.typicode.com/posts/1
+method: DELETE
+scripts:
+  - type: afterResponse
+    code: "// 1. Confirm that the HTTP status code indicates a successful deletion (e.g. 200 OK)\r
+
+      pm.test(\"Confirm that the HTTP status code is 200 OK\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      // 2. Verify the response body to ensure it matches the expected result\r
+
+      pm.test(\"Verify the response body data matches\", function () {\r
+
+      \    const responseData = pm.response.json();\r
+
+      \    \r
+
+      \    // Memastikan isi datanya sesuai dengan teks yang dikirim\r
+
+      \    pm.expect(responseData.title).to.eql(\"Learn API Testing\");\r
+
+      \    pm.expect(responseData.body).to.eql(\"Practicing API testing with JSONPlaceholder\");\r
+
+      \    pm.expect(responseData.userId).to.eql(101);\r
+
+      });\r
+
+      \r
+
+      // 3. Validate the response against the expected JSON Schema\r
+
+      pm.test(\"Validate the response against the expected JSON Schema\", function () {\r
+
+      \    const schema = {\r
+
+      \        \"type\": \"object\",\r
+
+      \        \"properties\": {\r
+
+      \            \"title\": { \"type\": \"string\" },\r
+
+      \            \"body\": { \"type\": \"string\" },\r
+
+      \            \"userId\": { \"type\": \"number\" }\r
+
+      \        },\r
+
+      \        \"required\": [\"title\", \"body\", \"userId\"]\r
+
+      \    };\r
+
+      \r
+
+      \    pm.response.to.have.jsonSchema(schema);\r
+
+      });"
+    language: text/javascript
+order: 3641801899826232

@@ -17,7 +17,23 @@ body:
     }"
 scripts:
   - type: afterResponse
-    code: "pm.test(\"Validate JSON Schema\", function () {\r
+    code: "pm.test(\"Verify response data matches request values\", function() {\r
+
+      const responseData = pm.response.json();\r
+
+      \r
+
+      pm.expect(responseData.title).to.eql(\"Learn API Testing\");\r
+
+      pm.expect(responseData.body).to.eql(\"Practicing API testing with JSONPlaceholder\");\r
+
+      pm.expect(responseData.userId).to.eql(101);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Validate JSON Schema\", function () {\r
 
       \r
 
