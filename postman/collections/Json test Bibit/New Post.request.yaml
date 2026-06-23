@@ -19,30 +19,58 @@ scripts:
   - type: afterResponse
     code: "pm.test(\"Validate JSON Schema\", function () {\r
 
+      \r
+
       \    const schema = {\r
+
+      \r
 
       \        \"type\": \"object\",\r
 
+      \r
+
       \        \"properties\": {\r
+
+      \r
 
       \            \"title\": { \"type\": \"string\" },\r
 
+      \r
+
       \            \"body\": { \"type\": \"string\" },\r
+
+      \r
 
       \            \"userId\": { \"type\": \"number\" },\r
 
+      \r
+
       \            \"id\": { \"type\": \"number\" }\r
+
+      \r
 
       \        },\r
 
+      \r
+
       \        \"required\": [\"title\", \"body\", \"userId\", \"id\"]\r
+
+      \r
 
       \    };\r
 
       \r
 
+      \r
+
+      \r
+
       \    pm.response.to.have.jsonSchema(schema);\r
 
-      });"
+      \r
+
+      }); \r
+
+      \r\n"
     language: text/javascript
 order: 62797852808252

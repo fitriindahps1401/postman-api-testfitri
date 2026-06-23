@@ -1,0 +1,64 @@
+$kind: http-request
+name: Retrive Posts
+url: https://jsonplaceholder.typicode.com/posts
+method: GET
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: ""
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Ensure that the id field is not null for all posts\", function () {\r
+
+      \    const responseData = pm.response.json();\r
+
+      \    \r
+
+      \    responseData.forEach(function(post, index) {\r
+
+      \        pm.expect(post.id).to.not.be.null;\r
+
+      \        pm.expect(post.id).to.be.a('number');\r
+
+      \    });\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Validate Array JSON Schema\", function () {\r
+
+      \    const schema = {\r
+
+      \        \"type\": \"array\", \r
+
+      \        \"items\": {\r
+
+      \            \"type\": \"object\",\r
+
+      \            \"properties\": {\r
+
+      \                \"userId\": { \"type\": \"number\" },\r
+
+      \                \"id\": { \"type\": \"number\" },\r
+
+      \                \"title\": { \"type\": \"string\" },\r
+
+      \                \"body\": { \"type\": \"string\" }\r
+
+      \            },\r
+
+      \            \"required\": [\"userId\", \"id\", \"title\", \"body\"]\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    pm.response.to.have.jsonSchema(schema);\r
+
+      });\r\n"
+    language: text/javascript
+order: 3572762222281534
