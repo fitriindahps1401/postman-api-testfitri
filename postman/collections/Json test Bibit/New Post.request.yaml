@@ -1,0 +1,48 @@
+$kind: http-request
+name: New Post
+url: https://jsonplaceholder.typicode.com/posts
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Learn API Testing\",\r
+
+    \  \"body\": \"Practicing API testing with JSONPlaceholder\",\r
+
+    \  \"userId\": 101\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Validate JSON Schema\", function () {\r
+
+      \    const schema = {\r
+
+      \        \"type\": \"object\",\r
+
+      \        \"properties\": {\r
+
+      \            \"title\": { \"type\": \"string\" },\r
+
+      \            \"body\": { \"type\": \"string\" },\r
+
+      \            \"userId\": { \"type\": \"number\" },\r
+
+      \            \"id\": { \"type\": \"number\" }\r
+
+      \        },\r
+
+      \        \"required\": [\"title\", \"body\", \"userId\", \"id\"]\r
+
+      \    };\r
+
+      \r
+
+      \    pm.response.to.have.jsonSchema(schema);\r
+
+      });"
+    language: text/javascript
+order: 62797852808252

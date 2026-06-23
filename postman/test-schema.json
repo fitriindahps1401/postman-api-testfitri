@@ -1,0 +1,37 @@
+pm.test("Status code is 201", function () {
+    pm.response.to.have.status(201);
+});
+
+const response = pm.response.json();
+
+pm.test("Validate response data", function () {
+    pm.expect(response.title)
+      .to.eql("Learn API Testing");
+
+    pm.expect(response.body)
+      .to.eql("Practicing API testing with JSONPlaceholder");
+
+    pm.expect(response.userId)
+      .to.eql(101);
+});
+
+pm.test("Validate JSON Schema", function () {
+
+    const schema = {
+        type: "object",
+        properties: {
+            title: { type: "string" },
+            body: { type: "string" },
+            userId: { type: "number" },
+            id: { type: "number" }
+        },
+        required: [
+            "title",
+            "body",
+            "userId",
+            "id"
+        ]
+    };
+
+    pm.response.to.have.jsonSchema(schema);
+});
