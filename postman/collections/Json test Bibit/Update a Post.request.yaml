@@ -1,0 +1,112 @@
+$kind: http-request
+name: Update a Post
+url: https://jsonplaceholder.typicode.com/posts/1
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": 1,\r
+
+    \    \"title\": \"Updated Post Title\",\r
+
+    \    \"body\": \"This is the updated body content.\",\r
+
+    \    \"userId\": 99\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      const response = pm.response.json();\r
+
+      \r
+
+      pm.test(\"ID is 1\", () => {\r
+
+      \    pm.expect(response.id).to.eql(1);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Title updated successfully\", () => {\r
+
+      \    pm.expect(response.title).to.eql(\"Updated Post Title\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Body updated successfully\", () => {\r
+
+      \    pm.expect(response.body)\r
+
+      \      .to.eql(\"This is the updated body content.\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"UserId updated successfully\", () => {\r
+
+      \    pm.expect(response.userId).to.eql(99);\r
+
+      });\r
+
+      \r
+
+      // JSON Schema Validation\r
+
+      const schema = {\r
+
+      \    type: \"object\",\r
+
+      \    properties: {\r
+
+      \        id: {\r
+
+      \            type: \"number\"\r
+
+      \        },\r
+
+      \        title: {\r
+
+      \            type: \"string\"\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            type: \"string\"\r
+
+      \        },\r
+
+      \        userId: {\r
+
+      \            type: \"number\"\r
+
+      \        }\r
+
+      \    },\r
+
+      \    required: [\"id\", \"title\", \"body\", \"userId\"]\r
+
+      };\r
+
+      \r
+
+      pm.test(\"Response matches schema\", () => {\r
+
+      \    pm.response.to.have.jsonSchema(schema);\r
+
+      });"
+    language: text/javascript
+order: 3855591940552195

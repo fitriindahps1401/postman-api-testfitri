@@ -1,4 +1,89 @@
 $kind: http-request
-url: ""
+name: Retrive Post1
+url: https://jsonplaceholder.typicode.com/posts
 method: GET
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      const posts = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Response is array\", () => {\r
+
+      \    pm.expect(posts).to.be.an(\"array\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Posts list is not empty\", () => {\r
+
+      \    pm.expect(posts.length).to.be.above(0);\r
+
+      });\r
+
+      \r
+
+      // Loop semua post\r
+
+      posts.forEach((post) => {\r
+
+      \    pm.expect(post.id).to.not.be.null;\r
+
+      });\r
+
+      \r
+
+      pm.test(\"All posts have id\", () => {\r
+
+      \    posts.forEach((post) => {\r
+
+      \        pm.expect(post.id).to.not.be.undefined;\r
+
+      \    });\r
+
+      });\r
+
+      \r
+
+      const postSchema = {\r
+
+      \    type: \"object\",\r
+
+      \    properties: {\r
+
+      \        userId: { type: \"number\" },\r
+
+      \        id: { type: \"number\" },\r
+
+      \        title: { type: \"string\" },\r
+
+      \        body: { type: \"string\" }\r
+
+      \    },\r
+
+      \    required: [\"userId\", \"id\", \"title\", \"body\"]\r
+
+      };\r
+
+      \r
+
+      pm.test(\"All posts match schema\", () => {\r
+
+      \    posts.forEach((post) => {\r
+
+      \        pm.expect(tv4.validate(post, postSchema)).to.be.true;\r
+
+      \    });\r
+
+      });"
+    language: text/javascript
 order: 3652201880705023

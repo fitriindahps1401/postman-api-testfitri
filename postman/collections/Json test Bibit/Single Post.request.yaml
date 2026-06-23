@@ -1,0 +1,47 @@
+$kind: http-request
+name: Single Post
+url: https://jsonplaceholder.typicode.com/posts/1
+method: GET
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      const response = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Post ID is 1\", () => {\r
+
+      \    pm.expect(response.id).to.eql(1);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Title is not empty\", () => {\r
+
+      \    pm.expect(response.title).to.not.be.empty;\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Body is not empty\", () => {\r
+
+      \    pm.expect(response.body).to.not.be.empty;\r
+
+      });\r
+
+      \r
+
+      // Simpan data untuk request berikutnya\r
+
+      pm.environment.set(\"postId\", response.id);"
+    language: text/javascript
+order: 3682892401394866

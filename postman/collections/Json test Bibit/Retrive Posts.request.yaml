@@ -9,17 +9,35 @@ body:
   content: ""
 scripts:
   - type: afterResponse
-    code: "pm.test(\"Ensure that the id field is not null for all posts\", function () {\r
+    code: "// 1. POIN 1 & 2: Loop untuk memastikan ID tidak null dan memeriksa kesesuaian data\r
+
+      pm.test(\"Ensure that the id field is not null and verify each post\", function () {\r
 
       \    const responseData = pm.response.json();\r
 
       \    \r
 
-      \    responseData.forEach(function(post, index) {\r
+      \    // Perulangan (loop) untuk memeriksa semua posts di dalam array\r
+
+      \    responseData.forEach(function(post) {\r
+
+      \        // Memastikan id tidak null/kosong\r
 
       \        pm.expect(post.id).to.not.be.null;\r
 
       \        pm.expect(post.id).to.be.a('number');\r
+
+      \        \r
+
+      \        // Opsional: Jika Anda ingin mencari data spesifik milik Anda di dalam loop\r
+
+      \        if (post.userId === 101) {\r
+
+      \            pm.expect(post.title).to.eql(\"Learn API Testing\");\r
+
+      \            pm.expect(post.body).to.eql(\"Practicing API testing with JSONPlaceholder\");\r
+
+      \        }\r
 
       \    });\r
 
@@ -27,11 +45,13 @@ scripts:
 
       \r
 
-      pm.test(\"Validate Array JSON Schema\", function () {\r
+      // 2. POIN 3: Validasi terhadap Expected JSON Schema (Tipe Array)\r
+
+      pm.test(\"Validate the response against the expected JSON Schema\", function () {\r
 
       \    const schema = {\r
 
-      \        \"type\": \"array\", \r
+      \        \"type\": \"array\", // Karena respons GET /posts mengembalikan list/daftar data\r
 
       \        \"items\": {\r
 
@@ -59,6 +79,6 @@ scripts:
 
       \    pm.response.to.have.jsonSchema(schema);\r
 
-      });\r\n"
+      });"
     language: text/javascript
 order: 3572762222281534
